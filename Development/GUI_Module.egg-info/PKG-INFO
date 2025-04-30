@@ -1,0 +1,5 @@
+Metadata-Version: 2.4
+Name: GUI_Module
+Version: 0.1.0
+Summary: PyQt5 and 6 modulated implementation with a main window construction class for themes.
+Author-email: Mirza Ishan Beg <mirzaishanb@gmail.com>
