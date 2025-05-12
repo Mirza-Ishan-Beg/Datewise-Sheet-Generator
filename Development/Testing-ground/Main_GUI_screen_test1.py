@@ -1,4 +1,5 @@
-from PyQt6.QtWidgets import QApplication
+from PyQt6.QtWidgets import QApplication, QLabel, QWidget, QVBoxLayout
+from PyQt6.QtCore import Qt
 from GUI_Base._GUI_COMPONENT_with_themes_ver4 import MainWindow
 from GUI_Base._CSS_APPLIER_VER1 import CssManager
 from GUI_Base.themes_section.themes import THEMES
@@ -16,11 +17,23 @@ class DatewiseSheetGenerator:
         # all of the widgets.
         self.window.clear_widgets()
 
+        custom_title_css = {
+            "title_main":
+                {"": "color: #AAA; font-size: 26px; font-weight: bold"},  # Custom color and bold
+        }
+
         # Define a simple vertical layout with one label and one button
         ribbon = self.screen_selection_region("HomeScreen")
+        title_label_path = ["qvboxlayout_main", "greeting_label"]
+        obj_title_label = self.window.find_widget(ribbon, title_label_path)  # Object retrival succeeded.
 
         # Apply dark theme CSS
         self.css_mgr.apply_css_to_all_widgets(self.window.widgets_container)
+        self.css_mgr.apply_css_to_widget(obj_title_label,
+                                                "QLabel",
+                                                custom_title_css["title_main"])  # CSS adjustments are good!
+        obj_title_label.setAlignment(Qt.AlignmentFlag.AlignCenter)  # Alignments works...
+
         self.window.apply_stylesheet_to_all_layout(THEMES["dark"])
 
         self.window.show()
@@ -83,10 +96,10 @@ class DatewiseSheetGenerator:
                 "qvboxlayout_main": {
                     "qhboxlayout_buttons_set_top": {
                         "back_button": {"widget_type": "button", "text": "Home",
-                                         "callback": lambda: print("will connect to home!")},
-                        "load_button": {"widget_type": "button", "text": "Home",
+                                         "callback": self.home_screen},
+                        "load_button": {"widget_type": "button", "text": "Load",
                                          "callback": lambda: print("will connect to load a template!")},
-                        "save_button": {"widget_type": "button", "text": "Home",
+                        "save_button": {"widget_type": "button", "text": "Save",
                                          "callback": lambda: print("will connect to save a template!")}
                     },
                     "table": {"widget_type": "table", "rows": 2, "columns": 2,
@@ -105,7 +118,7 @@ class DatewiseSheetGenerator:
             }
         }
         ribbon = ribbon_collection[screen_name]
-        self.window.add_flexible_ribbon(ribbon, self.window.main_layout, self.window.widgets_container)
+        ribbon = self.window.add_flexible_ribbon(ribbon, self.window.main_layout, self.window.widgets_container)
         return ribbon
     
 
