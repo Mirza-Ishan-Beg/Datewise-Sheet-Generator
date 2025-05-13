@@ -1,10 +1,11 @@
-from PyQt6.QtWidgets import QApplication, QVBoxLayout, QSizePolicy, QTableWidget, QTableWidgetItem, QHBoxLayout
+from PyQt6.QtWidgets import QApplication, QVBoxLayout, QSizePolicy, QTableWidget, QTableWidgetItem, QHBoxLayout, QFileDialog
 from PyQt6.QtCore import Qt
 from GUI_Base._GUI_COMPONENT_with_themes_ver4 import MainWindow
 from GUI_Base._CSS_APPLIER_VER1 import CssManager
 from GUI_Base.themes_section.themes import THEMES
 
 import sys
+import json
 
 class DatewiseSheetGenerator:
     def __init__(self):
@@ -81,6 +82,15 @@ class DatewiseSheetGenerator:
         obj_rrow.clicked.connect(lambda: self.modify_table_delete(self.table, is_row=True))
         obj_acol.clicked.connect(lambda: self.modify_table_add(self.table, is_row=False))
         obj_rcol.clicked.connect(lambda: self.modify_table_delete(self.table, is_row=False))
+
+        path_load = ["qvboxlayout_main", "qhboxlayout_buttons_set_top", "load_button"]
+        path_save = ["qvboxlayout_main", "qhboxlayout_buttons_set_top", "save_button"]
+
+        obj_load = self.window.find_widget(ribbon, path_load)
+        obj_save = self.window.find_widget(ribbon, path_save)
+
+        obj_load.clicked.connect(lambda: self.load_template(self.table))
+        obj_save.clicked.connect(lambda: self.save_template(self.table))
 
         # Apply dark theme CSS
         self.css_mgr.apply_css_to_all_widgets(self.window.widgets_container)
@@ -178,12 +188,76 @@ class DatewiseSheetGenerator:
     
     def save_template(self, table: QTableWidget):
         """
-        Will fetch all the table's contents and then put them inside the JSON file of a dictionary.
-        The dictionary is such that it follows pandas convention of the dataframe structuring.
-
-        This is done in order to make sure the sheet generation is handled with care.
+        Fetches all the table's contents and saves them into a JSON file following
+        a pandas-style structure: {"columns": [...], "data": [[...], [...], ...]}.
+        The user is prompted to choose where to save the file using a file dialog.
         """
-        pass
+
+        row_count = table.rowCount()
+        col_count = table.columnCount()
+
+        # Extract column headers
+        columns = [table.horizontalHeaderItem(col).text() if table.horizontalHeaderItem(col) else f"Column{col}"
+                for col in range(col_count)]
+
+        # Extract table data
+        data = []
+        for row in range(row_count):
+            row_data = []
+            for col in range(col_count):
+                item = table.item(row, col)
+                row_data.append(item.text() if item else "")
+            data.append(row_data)
+
+        # Format into dictionary
+        table_dict = {
+            "columns": columns,
+            "data": data
+        }
+
+        # Open save file dialog
+        file_dialog = QFileDialog()
+        file_dialog.setAcceptMode(QFileDialog.AcceptMode.AcceptSave)
+        file_dialog.setNameFilter("JSON Files (*.json);;All Files (*)")
+        if file_dialog.exec():
+            selected_files = file_dialog.selectedFiles()
+            if selected_files:
+                file_path = selected_files[0]
+                with open(file_path, "w", encoding="utf-8") as f:
+                    json.dump(table_dict, f, indent=4, ensure_ascii=False)
+    
+    def load_template(self, table: QTableWidget):
+        """
+        Loads a JSON table template file and populates the QTableWidget with its contents.
+        Assumes the JSON file follows the pandas-style structure:
+        {"columns": [...], "data": [[...], [...], ...]}.
+        """
+
+        # Open file dialog to select the JSON file
+        file_dialog = QFileDialog()
+        file_dialog.setAcceptMode(QFileDialog.AcceptMode.AcceptOpen)
+        file_dialog.setNameFilter("JSON Files (*.json);;All Files (*)")
+        if file_dialog.exec():
+            selected_files = file_dialog.selectedFiles()
+            if selected_files:
+                file_path = selected_files[0]
+                with open(file_path, "r", encoding="utf-8") as f:
+                    table_dict = json.load(f)
+
+                columns = table_dict.get("columns", [])
+                data = table_dict.get("data", [])
+
+                # Setup table dimensions
+                table.setColumnCount(len(columns))
+                table.setRowCount(len(data))
+
+                # Set headers
+                table.setHorizontalHeaderLabels(columns)
+
+                # Fill table data
+                for row_index, row_data in enumerate(data):
+                    for col_index, cell_value in enumerate(row_data):
+                        table.setItem(row_index, col_index, QTableWidgetItem(cell_value))
 
     def close_window(self):
         if self.window is not None:
