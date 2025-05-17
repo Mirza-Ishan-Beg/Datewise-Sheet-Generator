@@ -7,12 +7,14 @@ from excel_extractors import MiniBackend
 
 import sys
 import json
+import re
 
 class DatewiseSheetGenerator:
     def __init__(self):
         self.window = MainWindow(200, 200, 400, 300, "Datewise Sheet Generator v1.2.0")
         self.css_mgr = CssManager(THEMES["dark"])
         self.table = None  # Needed for making the table accessable in any method...
+        self.obj_json, self.obj_year, self.obj_xlsx = None, None, None
         self.home_screen()
     
     def home_screen(self):
@@ -99,14 +101,35 @@ class DatewiseSheetGenerator:
 
         self.window.show()
 
-    def instructions_screen(self):
-        pass
+    def generator_screen(self):
+        """
+        Will be responsible to let user enter template JSON name, year and 
+        excel file name that will be generated.
+        """
+        self.window.clear_widgets()
+        ribbon = self.screen_selection_region("GeneratorScreen")
+
+        input_year_path = ["qvboxlayout_main", "qhboxlayout_buttons_set1", "year_input"]
+        input_json_path = ["qvboxlayout_main", "qhboxlayout_buttons_set2", "json_input"]
+        input_xlsx_path = ["qvboxlayout_main", "qhboxlayout_buttons_set3", "xlsx_input"]
+        # generator_path = ["qvboxlayout_main", "qhboxlayout_buttons_set1", "Generator_button"]
+
+        self.obj_year = self.window.find_widget(ribbon, input_year_path)
+        self.obj_json = self.window.find_widget(ribbon, input_json_path)
+        self.obj_xlsx = self.window.find_widget(ribbon, input_xlsx_path)
+        # obj_gen = self.window.find_widget(ribbon, generator_path)
+
+        # obj_gen.clicked.connect(self.init_excel_construction)
+        
+        self.css_mgr.apply_css_to_all_widgets(self.window.widgets_container)
+        self.window.apply_stylesheet_to_all_layout(THEMES["dark"])
+        self.window.show()
     
     # --------------------------------------------------------------------- #
     # -------------------       UTILITY SECTION         ------------------- #
     # --------------------------------------------------------------------- #
 
-    def screen_selection_region(self, screen_name: dict):
+    def screen_selection_region(self, screen_name: str):
         """
         Will consist of collection of ribbons and regex selections of each ribbon to initiate any screen
         The screens will be still the same, and widget will still be given back, yet to keep
@@ -123,6 +146,8 @@ class DatewiseSheetGenerator:
                     "title_label": {"widget_type": "label", "text": "Datewise Sheet Generator"},
                     "template_create_button": {"widget_type": "button", "text": "Template Creation",
                                     "callback": self.creation_screen},
+                    "generate_excel_sheet_button": {"widget_type": "button", "text": "Generate Excel Sheet",
+                                    "callback": self.generator_screen},
                     "quit_button": {"widget_type": "button", "text": "Quit",
                                     "callback": self.close_window},
                 }
@@ -158,12 +183,18 @@ class DatewiseSheetGenerator:
                         "year_input": {"widget_type": "input_box", "text": "Enter Year to generate..."}
                     },
                     "qhboxlayout_buttons_set2": {
-                        "name_label": {"widget_type": "label", "text": "Enter the file name: "},
-                        "name_input": {"widget_type": "input_box", "text": "Enter name of file (with .xlsx)..."}
+                        "json_label": {"widget_type": "label", "text": "Enter the template file name: "},
+                        "json_input": {"widget_type": "input_box", "text": "Enter name of file (with .json)..."}
+                    },
+                    "qhboxlayout_buttons_set3": {
+                        "xlsx_label": {"widget_type": "label", "text": "Enter the file name: "},
+                        "xlsx_input": {"widget_type": "input_box", "text": "Enter name of file (with .xlsx)..."}
                     },
                     "Generator_button": {"widget_type": "button", "text": "Generate",
-                                        "callback": lambda: print("Will Generate.")
-                                        }
+                                        "callback": self.init_excel_construction
+                                        },
+                    "back_button": {"widget_type": "button", "text": "Home",
+                                    "callback": self.home_screen}
                 }
             }
         }
@@ -275,7 +306,7 @@ class DatewiseSheetGenerator:
                     for col_index, cell_value in enumerate(row_data):
                         table.setItem(row_index, col_index, QTableWidgetItem(cell_value))
     
-    def init_excel_construction(self):
+    def init_excel_construction(self) -> None:
         """
         Will take in JSON file, but first it opens the file from the file dialog box.
 
@@ -286,10 +317,38 @@ class DatewiseSheetGenerator:
 
         This button will be in the home screen itself.
         """
-        value = 2025
-        obj_saver = MiniBackend("Temp_sheet_gen.xlsx", value, "Temp_sheet_gen.xlsx")
+        print("DEBUGGING init_excel_construction 1")
+        if not self.validate_inputs():
+            return None
 
-    def close_window(self):
+        MiniBackend(self.obj_json.text(), int(self.obj_year.text()), self.obj_xlsx.text())
+        self.window.show_message("Success!", f"Successfully Generated {self.obj_xlsx.text()} from the template {self.obj_json.text()} for year {self.obj_year.text()}", "Success")
+        return None
+
+    def validate_inputs(self) -> bool:
+        json_input = self.obj_json.text()
+        year_input = self.obj_year.text()
+        xlsx_input = self.obj_xlsx.text()
+
+        json_pattern = r".*\.json$"
+        xlsx_pattern = r".*\.xlsx$"
+        year_pattern = r"^\d{4}$"
+
+        if not re.fullmatch(json_pattern, json_input, re.IGNORECASE):
+            self.window.show_message("JSON Incorrect", "File name does not mention json.", "Error")
+            return False
+ 
+        if not re.fullmatch(year_pattern, year_input):
+            self.window.show_message("YEAR Incorrect", "Year must be a 4-digit number.", "Error")
+            return False
+
+        if not re.fullmatch(xlsx_pattern, xlsx_input, re.IGNORECASE):
+            self.window.show_message("XLSX Incorrect", "File name does not mention xlsx.", "Error")
+            return False
+        
+        return True
+
+    def close_window(self) -> None:
         if self.window is not None:
             self.window.close()
     

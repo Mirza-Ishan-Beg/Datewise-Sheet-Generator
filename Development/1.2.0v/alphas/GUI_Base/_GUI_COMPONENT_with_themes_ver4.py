@@ -5,6 +5,7 @@ from PyQt6.QtWidgets import (
     QPushButton, QTableWidget, QTableWidgetItem, QComboBox, QLabel,
     QFileDialog, QInputDialog, QLineEdit, QAbstractButton, QSizePolicy, QMessageBox
 )
+from PyQt6.QtGui import QColor
 from themes_section.themes import THEMES
 
 
@@ -452,26 +453,54 @@ class MainWindow(QMainWindow, WidgetsTypes):
             return {key_to_keep: MainWindow.filter_nested_dict(d[key_to_keep], key_to_keep)} if key_to_keep in d else {}
         return d
 
-    def show_message(self, title, message, message_type):
+    def show_message(self, title: str, message: str, message_type: str):
         """Display a dark mode message box with HTML-styled text."""
         msg = QMessageBox()
         message_type = message_type.lower()
 
         # Configuration mapping for message types.
         config = {
-            "warning": {"icon": QMessageBox.Warning, "prefix": "Warning", "color": "#CCCCCC"},
-            "error": {"icon": QMessageBox.Critical, "prefix": "Error", "color": "#FF5555"},
-            "success": {"icon": QMessageBox.Information, "prefix": "Success", "color": "#55FF55"},
-        }.get(message_type, {"icon": QMessageBox.Information, "prefix": "Info", "color": "#CCCCCC"})
+            "warning": {
+                "icon": QMessageBox.Icon.Warning,
+                "prefix": "Warning",
+                "color": "#CCCCCC"
+            },
+            "error": {
+                "icon": QMessageBox.Icon.Critical,
+                "prefix": "Error",
+                "color": "#FF5555"
+            },
+            "success": {
+                "icon": QMessageBox.Icon.Information,
+                "prefix": "Success",
+                "color": "#55FF55"
+            },
+        }.get(message_type, {
+            "icon": QMessageBox.Icon.Information,
+            "prefix": "Info",
+            "color": "#CCCCCC"
+        })
 
         # Apply the configuration.
         msg.setIcon(config["icon"])
         msg.setWindowTitle(f"{config['prefix']}: {title}")
         msg.setText(f"<font color='{config['color']}'>{message}</font>")
-        msg.setStandardButtons(QMessageBox.Ok)
+        msg.setStandardButtons(QMessageBox.StandardButton.Ok)
 
         # Set a dark background for the QMessageBox.
-        msg.setStyleSheet("QMessageBox { background-color: #2E2E2E; }")
+        msg.setStyleSheet("""
+            QMessageBox {
+                background-color: #2E2E2E;
+                color: white;
+            }
+            QPushButton {
+                background-color: #444444;
+                color: white;
+            }
+            QPushButton:hover {
+                background-color: #555555;
+            }
+        """)
 
-        msg.exec_()
+        msg.exec()
 
