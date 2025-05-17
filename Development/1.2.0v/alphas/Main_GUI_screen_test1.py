@@ -3,6 +3,7 @@ from PyQt6.QtCore import Qt
 from GUI_Base._GUI_COMPONENT_with_themes_ver4 import MainWindow
 from GUI_Base._CSS_APPLIER_VER1 import CssManager
 from GUI_Base.themes_section.themes import THEMES
+from excel_extractors import MiniBackend
 
 import sys
 import json
@@ -149,6 +150,21 @@ class DatewiseSheetGenerator:
                                          "callback": lambda: print("Will Delete a column.")}
                     }
                 }
+            },
+            "GeneratorScreen": {
+                "qvboxlayout_main": {
+                    "qhboxlayout_buttons_set1": {
+                        "year_label": {"widget_type": "label", "text": "Enter the Year: "},
+                        "year_input": {"widget_type": "input_box", "text": "Enter Year to generate..."}
+                    },
+                    "qhboxlayout_buttons_set2": {
+                        "name_label": {"widget_type": "label", "text": "Enter the file name: "},
+                        "name_input": {"widget_type": "input_box", "text": "Enter name of file (with .xlsx)..."}
+                    },
+                    "Generator_button": {"widget_type": "button", "text": "Generate",
+                                        "callback": lambda: print("Will Generate.")
+                                        }
+                }
             }
         }
         ribbon = ribbon_collection[screen_name]
@@ -258,6 +274,20 @@ class DatewiseSheetGenerator:
                 for row_index, row_data in enumerate(data):
                     for col_index, cell_value in enumerate(row_data):
                         table.setItem(row_index, col_index, QTableWidgetItem(cell_value))
+    
+    def init_excel_construction(self):
+        """
+        Will take in JSON file, but first it opens the file from the file dialog box.
+
+        Then it will check the formatting to make sure it does not fall into fatal error.
+
+        Then it will generate the excel sheet out of the dataframe retrieved. Here the dataframe
+        is just repeated over and over for every day sequencing, divided by month into 12 sheets.
+
+        This button will be in the home screen itself.
+        """
+        value = 2025
+        obj_saver = MiniBackend("Temp_sheet_gen.xlsx", value, "Temp_sheet_gen.xlsx")
 
     def close_window(self):
         if self.window is not None:
