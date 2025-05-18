@@ -1,9 +1,9 @@
 
 ## Table of Contents
-- [DSG-V1.py](#DSG-V1.py)
+- [DSG-V1.py](#dsg-v1py)
 	- [Simple-Use-case](#simple-use-case)
-- [DSG-GUI-1.2.0v](#DSG-GUI-v1.2.0)
-	- [Getting Direct Build Setup](#Getting_Direct_Build_Setup)
+- [DSG-GUI-1.2.0v](#dsg-gui-v120)
+	- [Getting Direct Build Setup](#getting-direct-build-setup)
 	- [Executable Version of the Early Beta](#executable-version-of-the-early-beta)
 	- [Getting started with the GUI](#getting-started-with-the-gui)
 		- [Template Creation](#template-creation)
