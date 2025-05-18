@@ -1,13 +1,13 @@
 
 ## Table of Contents
-- [DSG-V1.py](###DSG-V1.py)
-	- [Simple-Use-case](####simple-use-case)
-- [DSG-GUI-1.2.0v](###DSG-GUI-v1.2.0)
-	- [Getting Direct Build Setup](####Getting_Direct_Build_Setup)
-	- [Executable Version of the Early Beta](####executable-version-of-the-early-beta)
-	- [Getting started with the GUI](####getting-started-with-the-gui)
-		- [Template Creation](#####template-creation)
-		- [Excel Generator](#####Excel-Generator)
+- [DSG-V1.py](#DSG-V1.py)
+	- [Simple-Use-case](#simple-use-case)
+- [DSG-GUI-1.2.0v](#DSG-GUI-v1.2.0)
+	- [Getting Direct Build Setup](#Getting_Direct_Build_Setup)
+	- [Executable Version of the Early Beta](#executable-version-of-the-early-beta)
+	- [Getting started with the GUI](#getting-started-with-the-gui)
+		- [Template Creation](#template-creation)
+		- [Excel Generator](#Excel-Generator)
 
 ---
 
@@ -88,8 +88,8 @@ This program uses JSON for storing templates, Pandas for Data frames creation an
 ![HomeScreen](assets/HomeScreen.png)
 1. After successfully getting the program on your system, you can open it and will be prompted with the Home Screen.
 	1. The Home screen consists of (options):
-		1. [Template Creation](#####template-creation)
-		2. [Excel Generator](#####Excel-Generator)
+		1. [Template Creation](#template-creation)
+		2. [Excel Generator](#Excel-Generator)
 		3. Quit (Exits the application)
 
 ---
