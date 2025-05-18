@@ -85,7 +85,7 @@ This program uses JSON for storing templates, Pandas for Data frames creation an
 ---
 
 #### Getting-started-with-the-GUI
-![HomeScreen](assets/HomeScreen.png)
+![HomeScreen](assets/HomeScreen.PNG)
 1. After successfully getting the program on your system, you can open it and will be prompted with the Home Screen.
 	1. The Home screen consists of (options):
 		1. [Template Creation](#template-creation)
@@ -94,7 +94,7 @@ This program uses JSON for storing templates, Pandas for Data frames creation an
 
 ---
 ##### Template-Creation
-![TemplateScreen](assets/TemplateScreen.png)
+![TemplateScreen](assets/TemplateScreen.PNG)
 1. Consists of Operations such as:
 	1. Save & Load templates. (Uses JSON file format to store data points.)
 	2. Simple Add feature Rows and Columns within the Template.
@@ -103,7 +103,7 @@ This program uses JSON for storing templates, Pandas for Data frames creation an
 ---
 
 ##### Excel-Generator
-![GenerationScreen](assets/GenerationScreen.png)
+![GenerationScreen](assets/GenerationScreen.PNG)
 1. Consists of:
 	1. 3 Input fields: 
 		1. The ```.json``` file location and name field. (To retrieve that JSON table template.)
