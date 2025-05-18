@@ -1,14 +1,13 @@
 
-### Table of Contents
-
-1. [[#DSG-V1.py]]
-	1. [[#Simple Use-case]]
-2. [[#DSG_GUI v1.2.0]]
-	1. [[#Getting Direct Build Setup]]
-	2. [[#Executable Version of the Early Beta]]
-	3. [[#Getting started with the GUI]]
-		1. [[#Template Creation]]
-		2. [[#Excel Generator]]
+## Table of Contents
+- [DSG-V1.py](###DSG-V1.py)
+	- [Simple-Use-case](####simple-use-case)
+- [DSG-GUI-1.2.0v](###DSG-GUI-v1.2.0)
+	- [Getting Direct Build Setup](####Getting_Direct_Build_Setup)
+	- [Executable Version of the Early Beta](####executable-version-of-the-early-beta)
+	- [Getting started with the GUI](####getting-started-with-the-gui)
+		- [Template Creation](#####template-creation)
+		- [Excel Generator](#####Excel-Generator)
 
 ---
 
@@ -26,7 +25,7 @@ _Note - "Template" here means a "date-wise table", where all dates should have s
 
 ---
 
-#### Simple Use-case
+#### Simple-Use-case
 
 - The application was made to construct a rigorous, non-changing template structure.
 - The GUI focuses on giving options to allow construction of flexible templates and templates that can be saved and loaded back up.
@@ -35,7 +34,7 @@ _Note - "Template" here means a "date-wise table", where all dates should have s
 
 ---
 
-### DSG_GUI v1.2.0
+### DSG-GUI-v1.2.0
 
 This program is a re-factor of prior DSG version which only had the ability to produce an excel sheet for the template of 1 hardcoded table.
 
@@ -47,7 +46,7 @@ This program uses JSON for storing templates, Pandas for Data frames creation an
 
 ---
 
-#### Getting Direct Build Setup
+#### Getting-Direct-Build-Setup
 
 1. Firstly, get the files downloaded from the v1.2.0/alphas within development.
 2. Here, there will be requirement of GUI_Base that you will see within the v1.2.0 folder, the structure of this file is as follows:
@@ -78,24 +77,24 @@ This program uses JSON for storing templates, Pandas for Data frames creation an
 5. Here, the main file of execution is ```Main_GUI_screen_test1.py```, there should not be  a problem running this file, if there is then you may contact me with the issue you encountered and/or try the compiled .exe version instead.
 
 ---
-#### Executable Version of the Early Beta
+#### Executable-Version-of-the-Early-Beta
 1. Simply download the executable from ```Versions``` folder, which will have it inside ```1.2.0v/dist``` path.
 2. There is no requirement needed for this one and it should run without issue, if it doesn't then do raise an issue.
 3. The .exe creation was possible with the help of ```PyInstaller```.
 
 ---
 
-#### Getting started with the GUI
-![Homescreen](HomeScreen.png)
+#### Getting-started-with-the-GUI
+![HomeScreen](HomeScreen.png)
 1. After successfully getting the program on your system, you can open it and will be prompted with the Home Screen.
 	1. The Home screen consists of (options):
-		1. [[#Template Creation]]
-		2. [[#Excel Generator]]
+		1. [Template Creation](#####template-creation)
+		2. [Excel Generator](#####Excel-Generator)
 		3. Quit (Exits the application)
 
 ---
-##### Template Creation
-![Homescreen](TemplateScreen.png)
+##### Template-Creation
+![TemplateScreen](TemplateScreen.png)
 1. Consists of Operations such as:
 	1. Save & Load templates. (Uses JSON file format to store data points.)
 	2. Simple Add feature Rows and Columns within the Template.
@@ -103,8 +102,8 @@ This program uses JSON for storing templates, Pandas for Data frames creation an
 
 ---
 
-##### Excel Generator
-![Homescreen](GenerationScreen.png)
+##### Excel-Generator
+![GenerationScreen](GenerationScreen.png)
 1. Consists of:
 	1. 3 Input fields: 
 		1. The ```.json``` file location and name field. (To retrieve that JSON table template.)
