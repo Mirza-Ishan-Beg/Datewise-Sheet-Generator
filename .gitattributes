@@ -3,3 +3,5 @@
 *.xlsx linguist-detectable=false
 *.py linguist-detectable=true
 Versions/** linguist-vendored
+*.html linguist-vendored
+*.tex linguist-vendored
