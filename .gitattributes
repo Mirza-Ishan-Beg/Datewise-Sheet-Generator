@@ -2,3 +2,4 @@
 *.json linguist-detectable=false
 *.xlsx linguist-detectable=false
 *.py linguist-detectable=true
+Versions/** linguist-vendored
